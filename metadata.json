@@ -1,0 +1,6 @@
+{
+  "name": "Shubham Farming Simulator",
+  "description": "Realistic 3D Indian village and agriculture simulator featuring tractors, trolleys, combine harvesters, threshers, JCB backhoe loaders, bulldozers, livestock, village mandi, and petrol pump.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
