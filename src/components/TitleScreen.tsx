@@ -1,4 +1,5 @@
 import React from 'react';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface TitleScreenProps {
   onStart: () => void;
@@ -63,7 +64,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
             and bulldozer, and trade grain at the village mandi.
           </p>
 
-          <div className="mt-8 flex items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-3.5">
             <button
               type="button"
               data-start="true"
@@ -72,6 +73,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
             >
               Start Farming · खेती शुरू करें
             </button>
+            <PWAInstallButton variant="title" />
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { soundEngine } from './audio/soundEngine';
 import { HudOverlay } from './components/HudOverlay';
 import { MandiModal } from './components/MandiModal';
 import { PauseModal } from './components/PauseModal';
+import { OfflineIndicator } from './components/OfflineIndicator';
 import { TitleScreen } from './components/TitleScreen';
 import { FarmCanvas, FarmSimActions } from './scene/FarmCanvas';
 import { GamePhase, HudSnapshot, VehicleId } from './sim/types';
@@ -185,6 +186,8 @@ export default function App() {
           }}
         />
       )}
+
+      <OfflineIndicator />
     </main>
   );
 }

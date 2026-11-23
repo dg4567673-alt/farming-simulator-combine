@@ -1,5 +1,6 @@
 import React from 'react';
 import { HudSnapshot } from '../sim/types';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface PauseModalProps {
   hud: HudSnapshot;
@@ -55,6 +56,7 @@ export const PauseModal: React.FC<PauseModalProps> = ({
           >
             Resume Farming
           </button>
+          <PWAInstallButton variant="modal" />
           <button
             type="button"
             onClick={onRestart}

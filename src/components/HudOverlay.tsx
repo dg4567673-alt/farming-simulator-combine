@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HudSnapshot, ImplementId, VehicleId } from '../sim/types';
 import { getVehicleActionLabel } from '../sim/farmingLogic';
 import { VEHICLE_SPECS } from '../sim/worldLayout';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface HudOverlayProps {
   hud: HudSnapshot;
@@ -63,41 +64,47 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
   const lowFuel = hud.fuelPct <= 18;
 
   return (
-    <div className="fixed inset-0 z-10 pointer-events-none flex flex-col justify-between p-4 md:p-5">
-      {/* Top Perimeter Row */}
-      <div className="flex items-start justify-between gap-4">
+    <div className="fixed inset-0 z-10 pointer-events-none flex flex-col justify-between p-3 sm:p-4 md:p-5">
+      {/* Top Perimeter Row (stacks cleanly on narrow portrait phones so utility buttons never clip) */}
+      <div className="flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
         {/* Top-Left Compact Economy & Field Status Cluster */}
         <div
-          className="pointer-events-auto rounded-lg px-4 py-3 border border-[#E5A93C]/25 shadow-lg max-w-md"
+          className="pointer-events-auto rounded-lg px-3 py-2.5 sm:px-4 sm:py-3 border border-[#E5A93C]/25 shadow-lg w-full sm:w-auto sm:max-w-md"
           style={{ backgroundColor: 'rgba(20, 18, 15, 0.88)' }}
         >
-          <div className="flex items-baseline gap-5">
+          <div className="flex items-baseline justify-between sm:justify-start gap-3 sm:gap-5">
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-[#B6AD9D]">Balance</div>
-              <div className="font-display text-2xl font-bold text-[#E5A93C] tabular-nums leading-tight">
+              <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#B6AD9D]">
+                Balance
+              </div>
+              <div className="font-display text-xl sm:text-2xl font-bold text-[#E5A93C] tabular-nums leading-tight whitespace-nowrap">
                 ₹{hud.rupees.toLocaleString()}
               </div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-[#B6AD9D]">Seeds</div>
-              <div className="font-display text-2xl font-bold text-[#F5F0E6] tabular-nums leading-tight">
+              <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#B6AD9D]">
+                Seeds
+              </div>
+              <div className="font-display text-xl sm:text-2xl font-bold text-[#F5F0E6] tabular-nums leading-tight whitespace-nowrap">
                 {hud.seedsKg} kg
               </div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-[#B6AD9D]">Grain Load</div>
-              <div className="font-display text-2xl font-bold text-[#F5F0E6] tabular-nums leading-tight">
+              <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[#B6AD9D]">
+                Grain Load
+              </div>
+              <div className="font-display text-xl sm:text-2xl font-bold text-[#F5F0E6] tabular-nums leading-tight whitespace-nowrap">
                 {hud.grainCarriedKg} kg
               </div>
             </div>
           </div>
 
           {/* Clean unboxed typographic field progress summary */}
-          <div className="mt-2 pt-2 border-t border-white/10 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs text-[#CFC6B4] tabular-nums">
+          <div className="mt-1.5 sm:mt-2 pt-1.5 sm:pt-2 border-t border-white/10 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] sm:text-xs text-[#CFC6B4] tabular-nums">
             {hud.fieldSummaries.map((f, idx) => (
               <React.Fragment key={f.id}>
                 {idx > 0 && <span aria-hidden="true">·</span>}
-                <span>
+                <span className="whitespace-nowrap">
                   {f.crop === 'wheat' ? 'F1 Wheat' : f.crop === 'paddy' ? 'F2 Paddy' : 'F3 Mustard'}:{' '}
                   <strong
                     className={
@@ -113,7 +120,7 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
 
           {/* Contextual Nearby Zone Action (Mandi / Petrol Pump / Hitch / Unload) */}
           {hud.nearbyPrompt && (
-            <div className="mt-2.5 pt-2.5 border-t border-[#E5A93C]/25 flex items-center justify-between gap-3">
+            <div className="mt-2 pt-2 border-t border-[#E5A93C]/25 flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-xs font-semibold text-[#FBBF24] truncate">
                   {hud.nearbyPrompt.label}
@@ -158,7 +165,8 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
         )}
 
         {/* Top-Right Compact Utility Buttons */}
-        <div className="pointer-events-auto flex items-center gap-2 shrink-0">
+        <div className="pointer-events-auto flex items-center justify-end flex-wrap gap-1.5 sm:gap-2 shrink-0">
+          <PWAInstallButton variant="hud" />
           <button
             type="button"
             tabIndex={-1}
@@ -168,14 +176,15 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
               e.currentTarget.blur();
               onOpenMandi();
             }}
-            className="h-10 px-3 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-xs font-medium text-[#F5F0E6] flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+            className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[11px] sm:text-xs font-medium text-[#F5F0E6] flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
             style={{ backgroundColor: 'rgba(20, 18, 15, 0.88)' }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <path d="M9 22V12h6v10" />
             </svg>
-            <span>Mandi & Guide</span>
+            <span className="sm:hidden">Mandi</span>
+            <span className="hidden sm:inline">Mandi &amp; Guide</span>
           </button>
 
           <button
@@ -187,10 +196,10 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
               e.currentTarget.blur();
               onCycleCamera();
             }}
-            className="w-10 h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
             style={{ backgroundColor: 'rgba(20, 18, 15, 0.88)' }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
               <circle cx="12" cy="13" r="4" />
             </svg>
@@ -205,17 +214,17 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
               e.currentTarget.blur();
               onToggleMute();
             }}
-            className="w-10 h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
             style={{ backgroundColor: 'rgba(20, 18, 15, 0.88)' }}
           >
             {muted ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2">
                 <path d="M11 5L6 9H2v6h4l5 4V5z" />
                 <line x1="23" y1="9" x2="17" y2="15" />
                 <line x1="17" y1="9" x2="23" y2="15" />
               </svg>
             ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M11 5L6 9H2v6h4l5 4V5z" />
                 <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
               </svg>
@@ -231,10 +240,10 @@ export const HudOverlay: React.FC<HudOverlayProps> = ({
               e.currentTarget.blur();
               onTogglePause();
             }}
-            className="w-10 h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-white/15 hover:border-[#E5A93C]/60 text-[#F5F0E6] flex items-center justify-center cursor-pointer"
             style={{ backgroundColor: 'rgba(20, 18, 15, 0.88)' }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <rect x="6" y="4" width="4" height="16" />
               <rect x="14" y="4" width="4" height="16" />
             </svg>
